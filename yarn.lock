@@ -254,23 +254,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prb/foundry-template@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@prb/foundry-template@workspace:."
-  dependencies:
-    "@commitlint/cli": ^17.0.3
-    "@commitlint/config-conventional": ^17.0.3
-    commitizen: ^4.2.4
-    cz-conventional-changelog: ^3.3.0
-    husky: ^8.0.1
-    lint-staged: ^13.0.3
-    prettier: ^2.7.1
-    prettier-plugin-solidity: ^1.0.0-dev.22
-    solhint: ^3.3.7
-    solhint-plugin-prettier: ^0.0.5
-  languageName: unknown
-  linkType: soft
-
 "@solidity-parser/parser@npm:^0.14.1":
   version: 0.14.2
   resolution: "@solidity-parser/parser@npm:0.14.2"
@@ -356,6 +339,23 @@ __metadata:
   checksum: 2605fa124260c61bad38bb65eba30d2f72216a78e94d0ab19b11b4e0327d572b8d530c0c9cc3b0764f727ad26d39e00bf7ebad57781ca6368394d73169c59e46
   languageName: node
   linkType: hard
+
+"NFTLender@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "NFTLender@workspace:."
+  dependencies:
+    "@commitlint/cli": ^17.0.3
+    "@commitlint/config-conventional": ^17.0.3
+    commitizen: ^4.2.4
+    cz-conventional-changelog: ^3.3.0
+    husky: ^8.0.1
+    lint-staged: ^13.0.3
+    prettier: ^2.7.1
+    prettier-plugin-solidity: ^1.0.0-dev.22
+    solhint: ^3.3.7
+    solhint-plugin-prettier: ^0.0.5
+  languageName: unknown
+  linkType: soft
 
 "acorn-jsx@npm:^5.0.0":
   version: 5.3.2
