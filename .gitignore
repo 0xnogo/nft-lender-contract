@@ -16,6 +16,7 @@
 .pnp.*
 yarn-debug.log*
 yarn-error.log*
+yarn.lock
 
 # broadcasts
 !/broadcast
