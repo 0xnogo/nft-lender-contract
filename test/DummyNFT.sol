@@ -12,6 +12,12 @@ contract DummyNFT is ERC721, Ownable {
 
     constructor() ERC721("DummyNFT", "DUM") {}
 
+    function selfMint() public {
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
+        _safeMint(msg.sender, tokenId);
+    }
+    
     function safeMint(address to) public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
