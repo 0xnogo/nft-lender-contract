@@ -153,4 +153,6 @@ contract NFTLender {
 
         borrowers[_user] = Loan(loanFromUser.amount, loanFromUser.startTime, block.timestamp);
     }
+
+    fallback () external payable {}
 }
