@@ -53,12 +53,12 @@ contract NFTLender {
     }
 
     function borrow(uint256 _amountAsked) public {
-        uint256 maxAmountLoan = _maxAmountLoan(msg.sender);
-        require(_amountAsked <= maxAmountLoan, "Asked amount bigger than collateral");
+        uint256 maxAmountLoanforUser = _maxAmountLoan(msg.sender);
+        require(_amountAsked <= maxAmountLoanforUser, "Asked amount bigger than collateral");
 
         // solhint-disable-next-line avoid-low-level-calls
         (bool success, ) = payable(msg.sender).call{ value: _amountAsked }("");
-        require(success, "eth reimbursment failed");
+        require(success, "eth payment failed");
 
         borrowers[msg.sender] = Loan(_amountAsked, block.timestamp, block.timestamp);
 
@@ -108,6 +108,10 @@ contract NFTLender {
     // For simplicity and demo, hardcoded value is provided
     function getFloorPrice(address _nftCollectionAddress) public view returns (uint256) {
         return oracle.getFloorPrice(_nftCollectionAddress);
+    }
+
+    function maxAmountLoan(address _for) public view returns (uint256) {
+        return _maxAmountLoan(_for);
     }
 
     function _collateral(address _for) private view returns (uint256) {
