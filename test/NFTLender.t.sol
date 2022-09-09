@@ -35,10 +35,12 @@ contract ContractTest is PRBTest, Cheats {
         // Mint tokenId 0 to depositor address
         nftToken.safeMint(depositor);
         nftToken.safeMint(vm.addr(42));
+        oracle.setFloorPrice(100 ether);
     }
 
-    function testSetUp() public {
+    function testSetUp(address _anyAddress) public {
         assertEq(nftToken.balanceOf(depositor), 1);
+        assertEq(oracle.getFloorPrice(_anyAddress), 100 ether);
     }
 
     function testGetFloorPrice() public {
@@ -110,7 +112,7 @@ contract ContractTest is PRBTest, Cheats {
 
     function testCannotWithdrawAsNoCollateral() public {
         vm.startPrank(depositor);
-        vm.expectRevert("No collateral");
+        vm.expectRevert("Asked amount bigger than collateral");
         _borrow(10);
         vm.stopPrank();
         assertEq(depositor.balance, 0);

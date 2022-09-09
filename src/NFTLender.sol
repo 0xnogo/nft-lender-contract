@@ -129,7 +129,7 @@ contract NFTLender {
 
     function _maxAmountLoan(address _for) private view returns (uint256) {
         Nft[] memory nftsFromSender = lenders[_for];
-        require(nftsFromSender.length != 0, "No collateral");
+        if (nftsFromSender.length == 0) return 0;
         return (_collateral(_for) * LTV) / 100;
     }
 
@@ -154,5 +154,5 @@ contract NFTLender {
         borrowers[_user] = Loan(loanFromUser.amount, loanFromUser.startTime, block.timestamp);
     }
 
-    fallback() external payable {}
+    receive() external payable {}
 }
