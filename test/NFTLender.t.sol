@@ -184,18 +184,6 @@ contract ContractTest is PRBTest, Cheats {
         assertEq(nftLender.getLoanFor(depositor).length, 0);
     }
 
-    function testCannotWithdrawAllAsNoLoan() public {
-        vm.startPrank(depositor);
-        _deposit(FIRST_TOKEN_ID);
-        vm.expectRevert("No loan made");
-        _withdrawAll(0);
-        vm.stopPrank();
-        assertEq(depositor.balance, 0);
-
-        assertEq(nftLender.getDepositFor(depositor).length, 1);
-        assertEq(nftLender.getLoanFor(depositor).length, 0);
-    }
-
     function testWithdrawAllAfterBorrow() public {
         vm.deal(address(nftLender), 100 ether);
 
