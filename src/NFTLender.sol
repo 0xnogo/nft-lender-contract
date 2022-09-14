@@ -10,7 +10,7 @@ contract NFTLender {
     uint256 public constant INTEREST_RATE = 316887385; // 10% - interest rate per sec per 0.001Eth
     uint256 public constant LIQUIDATION_THRESHOLD = 8000; // multiplied by 100 to avoid round down to 1
     uint256 public constant LTV = 75;
-    uint256 public constant HEALTH_FACTOR = 100; // // multiplied by 100 to avoid round down to 1
+    uint256 public constant HEALTH_FACTOR = 100; // multiplied by 100 to avoid round down to 1
 
     OracleNftFloor public oracle;
 
@@ -86,6 +86,7 @@ contract NFTLender {
         require(nftToWithdraw.collectionAddress != address(0), "Nft not found");
 
         uint256 fullDebt = _getFullDebt(msg.sender);
+
         if (fullDebt > 0) {
             uint256 collateralBeforeWithdraw = _collateral(msg.sender);
             uint256 collateralAfterWithdraw = collateralBeforeWithdraw - collateralToWithdraw;
@@ -161,6 +162,10 @@ contract NFTLender {
         return _getFullDebt(msg.sender);
     }
 
+    function getHealthFactor() public view returns (uint256) {
+        return _getHealthFactor(msg.sender);
+    }
+
     function getDepositFor(address _user) public view returns (Nft[] memory) {
         return lenders[_user];
     }
@@ -217,6 +222,8 @@ contract NFTLender {
     }
 
     function _getHealthFactor(address _for) private view returns (uint256 healthFactor) {
+        if(_getFullDebt(_for) == 0) return healthFactor = HEALTH_FACTOR + 1;
+
         uint256 liquidationThreshold = (_collateral(_for) * LIQUIDATION_THRESHOLD) / 100;
         healthFactor = liquidationThreshold / _getFullDebt(_for);
     }
