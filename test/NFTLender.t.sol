@@ -338,6 +338,29 @@ contract ContractTest is PRBTest, Cheats {
         assertEq(nftLender.getLoanFor(depositor).length, 1);
     }
 
+    function testWithdrawOneByOneNftWithNoLoan() public {
+        vm.deal(address(nftLender), 100 ether);
+        vm.deal(depositor, 100 ether);
+        nftToken.safeMint(depositor);
+
+        vm.startPrank(depositor);
+        _deposit(FIRST_TOKEN_ID);
+        _deposit(SECOND_TOKEN_ID);
+        assertEq(nftToken.balanceOf(depositor), 0);
+        assertEq(nftToken.balanceOf(address(nftLender)), 2);
+
+        skip(60 * 60); // 1 hour
+        _withdrawOne(address(nftToken), FIRST_TOKEN_ID);
+        _withdrawOne(address(nftToken), SECOND_TOKEN_ID);
+        vm.stopPrank();
+
+        assertEq(nftLender.getDepositFor(depositor).length, 0);
+        assertEq(nftLender.getLoanFor(depositor).length, 0);
+
+        assertEq(nftToken.balanceOf(depositor), 2);
+        assertEq(nftToken.balanceOf(address(nftLender)), 0);
+    }
+
     function testWithdrawOneNft() public {
         vm.deal(address(nftLender), 100 ether);
         vm.deal(depositor, 100 ether);
@@ -354,8 +377,6 @@ contract ContractTest is PRBTest, Cheats {
         skip(60 * 60); // 1 hour
         _withdrawOne(address(nftToken), FIRST_TOKEN_ID);
         vm.stopPrank();
-
-        assertEq(nftLender.getDepositFor(depositor).length, 1);
 
         //we should not pay more that 1 eth of fee
         assertGte(depositor.balance, 100 ether + 10 ether);

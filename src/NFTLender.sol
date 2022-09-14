@@ -67,7 +67,6 @@ contract NFTLender {
     }
 
     function withdraw(address _address, uint256 _id) public {
-        Loan[] memory loansFromUser = borrowers[msg.sender];
         Nft[] memory nftsFromUser = lenders[msg.sender];
 
         require(nftsFromUser.length != 0, "No deposit made");
@@ -86,12 +85,14 @@ contract NFTLender {
         }
         require(nftToWithdraw.collectionAddress != address(0), "Nft not found");
 
-        uint256 collateralBeforeWithdraw = _collateral(msg.sender);
-        uint256 collateralAfterWithdraw = collateralBeforeWithdraw - collateralToWithdraw;
-        uint256 liquidationThreshold = (collateralAfterWithdraw * LIQUIDATION_THRESHOLD) / 100;
-        uint256 healthFactor = liquidationThreshold / _getFullDebt(msg.sender);
-
-        require(healthFactor > HEALTH_FACTOR, "Colleral left not sufficient");
+        uint256 fullDebt = _getFullDebt(msg.sender);
+        if (fullDebt > 0) {
+            uint256 collateralBeforeWithdraw = _collateral(msg.sender);
+            uint256 collateralAfterWithdraw = collateralBeforeWithdraw - collateralToWithdraw;
+            uint256 liquidationThreshold = (collateralAfterWithdraw * LIQUIDATION_THRESHOLD) / 100;
+            uint256 healthFactor = liquidationThreshold / fullDebt;
+            require(healthFactor > HEALTH_FACTOR, "Colleral left not sufficient");
+        }
 
         IERC721 nft = IERC721(nftToWithdraw.collectionAddress);
         nft.transferFrom(address(this), msg.sender, nftToWithdraw.tokenId);
@@ -194,7 +195,7 @@ contract NFTLender {
         return (_collateral(_for) * LTV) / 100;
     }
 
-    function _getFullDebt(address _user) public view returns (uint256 fullDebt) {
+    function _getFullDebt(address _user) private view returns (uint256 fullDebt) {
         Loan[] memory loansFromUser = borrowers[_user];
 
         for (uint256 i; i < loansFromUser.length; i++) {
