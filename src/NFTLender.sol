@@ -222,7 +222,7 @@ contract NFTLender {
     }
 
     function _getHealthFactor(address _for) private view returns (uint256 healthFactor) {
-        if(_getFullDebt(_for) == 0) return healthFactor = HEALTH_FACTOR + 1;
+        if (_getFullDebt(_for) == 0) return healthFactor = HEALTH_FACTOR + 1;
 
         uint256 liquidationThreshold = (_collateral(_for) * LIQUIDATION_THRESHOLD) / 100;
         healthFactor = liquidationThreshold / _getFullDebt(_for);
