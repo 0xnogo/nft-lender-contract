@@ -101,11 +101,10 @@ contract NFTLender {
     }
 
     function withdrawAndReimburseAll() public payable {
-        Loan[] memory loansFromUser = borrowers[msg.sender];
         Nft[] memory nftsFromUser = lenders[msg.sender];
 
         require(nftsFromUser.length != 0, "No deposit made");
-        require(loansFromUser.length != 0, "No loan made");
+        // require(loansFromUser.length != 0, "No loan made");
 
         _reimburseAllDebt(msg.sender, payable(msg.sender));
 
