@@ -6,7 +6,6 @@ import { NFTLender } from "../src/NFTLender.sol";
 import "../src/OracleNftFloor.sol";
 import { DummyNFT } from "../test/DummyNFT.sol";
 
-/// @dev See the Solidity Scripting tutorial: https://book.getfoundry.sh/tutorials/solidity-scripting
 contract NFTLenderScript is Script {
     NFTLender internal nftLender;
     OracleNftFloor internal oracle;
@@ -15,7 +14,7 @@ contract NFTLenderScript is Script {
     function run() public {
         vm.startBroadcast();
 
-        if (block.chainid == 31337) {
+        if (block.chainid == 31337 || block.chainid == 5) {
             dummyNft = new DummyNFT();
         }
         oracle = new OracleNftFloor();
