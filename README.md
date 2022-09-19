@@ -6,7 +6,7 @@ Borrow/deposit/liquidate now at [http://nftlender.vercel.app](http://nftlender.v
 
 Twitter 🧵: https://twitter.com/0xnogo/status/1571552572821090304
 
-![plot](./screnshot.png)
+![plot](./screenshot.png)
 
 ## Addresses
 
@@ -21,18 +21,23 @@ I haven’t study the competition nor checked if there is a market for it. The s
 ## Key features
 
 ### Deposit
+
 The idea is to allow users to deposit their nfts as collateral (=floor price of the collection). Built a fake Oracle price feed as I was not to find one for nft floor price.
 
 ### Borrow
+
 TVL is 75% so for 1 eth worth of nft staked, you can borrow up to 0.75 ETH. Loans can be split an unlimited number of time. example: 0.20eth and 0.20eth and 0.35eth.
 
 ### Reimburse
+
 Interest rate is 10% annualized. It is possible to reimburse only one loan or all. Reimbursing will allow you to increase your health factor and avoid liquidation (=threshold at 80%).
 
 ### Withdraw
+
 For withdrawing, as long as you are collateralized enough, it is possible to withdraw nfts. Of course, if the health factor < 1 after a potential withdrawal, you will be asked to reimburse first.
 
 ### Admin
+
 Admin tab in order to play with all that. You can mint an NFT and deposit it but also change the price coming from the fake oracle feed to trigger liquidations.
 
 ## Developing
@@ -43,4 +48,5 @@ forge test -vvvv
 ```
 
 ## Some future ideas
-* Oracle price feed
+
+- Oracle price feed
